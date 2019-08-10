@@ -33,8 +33,8 @@
                     <td>{{ user.id }}</td>
                     <td>{{ user.name }}</td>
                     <td>{{ user.email }}</td>
-                    <td>{{ user.created_at }}</td>
-                    <td>{{ user.type }}</td>
+                    <td>{{ user.type | upText }}</td>
+                    <td>{{ user.created_at | myDate }}</td>
                     <td>
                       <a href="#" class="mr-1"><i class="fas fa-edit blue"></i></a>
                       <a href="#" class="mr-1"><i class="fas fa-trash-alt red"></i></a>
