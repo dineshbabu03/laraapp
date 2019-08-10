@@ -31,11 +31,22 @@ const options = {
 }
 Vue.use(VueProgressBar, options)
 
+import Swal from 'sweetalert2'
+window.Swal = Swal;
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000
+});
+
+window.Toast = Toast;
+
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 let routes = [
-
   { path: '/dashboard', component: require ('./components/Dashboard.vue').default },
   { path: '/profile', component: require ('./components/Profile.vue').default },
   { path: '/users', component: require ('./components/Users.vue').default }
