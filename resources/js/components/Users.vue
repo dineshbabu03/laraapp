@@ -128,7 +128,9 @@
         methods: {
 
           createUser() {
-            this.form.post('api/user');
+            this.$Progress.start()
+            this.form.post('api/user')
+            this.$Progress.finish()
           },
 
           displayUsers() {
