@@ -24,15 +24,17 @@
                     <th>Name</th>
                     <th>Email</th>
                     <th>Type</th>
+                    <th>Registered</th>
                     <th>Modify</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>Dinesh Babu</td>
-                    <td>dinesh@nanocorporation.co.uk</td>
-                    <td>Admin</td>
+                  <tr v-for="user in users">
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.created_at }}</td>
+                    <td>{{ user.type }}</td>
                     <td>
                       <a href="#" class="mr-1"><i class="fas fa-edit blue"></i></a>
                       <a href="#" class="mr-1"><i class="fas fa-trash-alt red"></i></a>
@@ -110,6 +112,8 @@
 
         data() {
             return {
+              users: {},
+
               form: new Form({
                 name: '',
                 email: '',
@@ -125,12 +129,18 @@
 
           createUser() {
             this.form.post('api/user');
+          },
+
+          displayUsers() {
+              axios
+                .get("api/user")
+                .then(({ data }) => (this.users = data.data));
           }
 
         },
 
-        mounted() {
-            console.log('Component mounted.')
+        created() {
+            this.displayUsers();
         }
     }
 </script>
