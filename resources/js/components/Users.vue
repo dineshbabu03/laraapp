@@ -37,7 +37,7 @@
                     <td>{{ user.created_at | myDate }}</td>
                     <td>
                       <a href="#" class="mr-1"><i class="fas fa-edit blue"></i></a>
-                      <a href="#" class="mr-1"><i class="fas fa-trash-alt red"></i></a>
+                      <a href="#" class="mr-1" @click="deleteUser(user.id)"><i class="fas fa-trash-alt red"></i></a>
                     </td>
                   </tr>
                 </tbody>
@@ -148,15 +148,49 @@
               .catch(() => {
 
               })
+          },
+
+          deleteUser(userid){
+            Swal.fire({
+              title: 'Are you sure?',
+              text: "You won't be able to revert this!",
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Yes, delete it!'
+              }).then((result) => {
+                if (result.value) {
+                  //call api to delete user
+                  this.form.delete('api/user/'+userid)
+                    .then(() => {
+                        Swal.fire(
+                          'Deleted!',
+                          'Your file has been deleted.',
+                          'success'
+                        )
+                        Fire.$emit('AfterUserDeleted')
+                    })
+                    .catch(() => {
+                      swal('Failed!', 'There was something wrong', 'warning');
+                    });
+                }
+              })
           }
 
         },
 
         created() {
             this.displayUsers();
+
             Fire.$on('AfterUserCreated', () => {
                 this.displayUsers();
-            })
+            });
+
+            Fire.$on('AfterUserDeleted', () => {
+                this.displayUsers();
+            });
+
             // setInterval(() => this.displayUsers(), 3000);
         }
     }

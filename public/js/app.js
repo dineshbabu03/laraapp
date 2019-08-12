@@ -2067,14 +2067,40 @@ __webpack_require__.r(__webpack_exports__);
 
         _this2.$Progress.finish();
       })["catch"](function () {});
+    },
+    deleteUser: function deleteUser(userid) {
+      var _this3 = this;
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then(function (result) {
+        if (result.value) {
+          //call api to delete user
+          _this3.form["delete"]('api/user/' + userid).then(function () {
+            Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+            Fire.$emit('AfterUserDeleted');
+          })["catch"](function () {
+            swal('Failed!', 'There was something wrong', 'warning');
+          });
+        }
+      });
     }
   },
   created: function created() {
-    var _this3 = this;
+    var _this4 = this;
 
     this.displayUsers();
     Fire.$on('AfterUserCreated', function () {
-      _this3.displayUsers();
+      _this4.displayUsers();
+    });
+    Fire.$on('AfterUserDeleted', function () {
+      _this4.displayUsers();
     }); // setInterval(() => this.displayUsers(), 3000);
   }
 });
@@ -59029,7 +59055,23 @@ var render = function() {
                       _vm._v(_vm._s(_vm._f("myDate")(user.created_at)))
                     ]),
                     _vm._v(" "),
-                    _vm._m(2, true)
+                    _c("td", [
+                      _vm._m(2, true),
+                      _vm._v(" "),
+                      _c(
+                        "a",
+                        {
+                          staticClass: "mr-1",
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              return _vm.deleteUser(user.id)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fas fa-trash-alt red" })]
+                      )
+                    ])
                   ])
                 }),
                 0
@@ -59345,14 +59387,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("a", { staticClass: "mr-1", attrs: { href: "#" } }, [
-        _c("i", { staticClass: "fas fa-edit blue" })
-      ]),
-      _vm._v(" "),
-      _c("a", { staticClass: "mr-1", attrs: { href: "#" } }, [
-        _c("i", { staticClass: "fas fa-trash-alt red" })
-      ])
+    return _c("a", { staticClass: "mr-1", attrs: { href: "#" } }, [
+      _c("i", { staticClass: "fas fa-edit blue" })
     ])
   },
   function() {
@@ -74795,8 +74831,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/dinesh/Desktop/Learning/laraapp/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/dinesh/Desktop/Learning/laraapp/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! E:\WebApps\laravel\laraapp\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! E:\WebApps\laravel\laraapp\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
