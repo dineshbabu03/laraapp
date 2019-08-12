@@ -9,8 +9,7 @@
               <div class="card-tools">
                 <button
                   class="btn btn-success"
-                  data-toggle="modal"
-                  data-target="#addNew">
+                  @click="newModal">
                     Add User <i class="fas fa-user-plus"></i>
                 </button>
               </div>
@@ -36,7 +35,7 @@
                     <td>{{ user.type | upText }}</td>
                     <td>{{ user.created_at | myDate }}</td>
                     <td>
-                      <a href="#" class="mr-1"><i class="fas fa-edit blue"></i></a>
+                      <a href="#" class="mr-1" @click="editModal(user)"><i class="fas fa-edit blue"></i></a>
                       <a href="#" class="mr-1" @click="deleteUser(user.id)"><i class="fas fa-trash-alt red"></i></a>
                     </td>
                   </tr>
@@ -52,13 +51,14 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Add New User</h5>
+              <h5 class="modal-title" id="exampleModalLabel" v-show="!editMode">Add New User</h5>
+              <h5 class="modal-title" id="exampleModalLabel" v-show="editMode">Update User</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
 
-            <form @submit.prevent="createUser">
+            <form @submit.prevent="editMode ? updateUser() : createUser()">
               <div class="modal-body">
                 <div class="form-group">
                   <input v-model="form.name" type="text" name="name" placeholder="Name"
@@ -96,7 +96,8 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Create</button>
+                <button type="submit" class="btn btn-success" v-show="!editMode">Create</button>
+                <button type="submit" class="btn btn-primary" v-show="editMode">Update</button>
               </div>
             </form>
 
@@ -112,9 +113,11 @@
 
         data() {
             return {
+              editMode: false,
               users: {},
 
               form: new Form({
+                id: '',
                 name: '',
                 email: '',
                 password: '',
@@ -143,14 +146,14 @@
                     type: 'success',
                     title: 'User added successfully'
                   })
-                  this.$Progress.finish();
+                  this.$Progress.finish()
               })
               .catch(() => {
-
+                  this.$Progress.fail()
               })
           },
 
-          deleteUser(userid){
+          deleteUser(userid) {
             Swal.fire({
               title: 'Are you sure?',
               text: "You won't be able to revert this!",
@@ -176,6 +179,36 @@
                     });
                 }
               })
+          },
+
+          updateUser() {
+              this.form.put('api/user/'+this.form.id)
+              .then(() => {
+                  Fire.$emit('AfterUserUpdated')
+                  $('#addNew').modal('hide')
+                  Toast.fire({
+                    type: 'success',
+                    title: 'User Updated successfully'
+                  })
+                  this.$Progress.finish()
+              })
+              .catch(() => {
+                  this.$Progress.fail()
+              })
+          },
+
+          newModal() {
+            this.editMode = false;
+            this.form.clear()
+            this.form.reset()
+            $('#addNew').modal('show')
+          },
+
+          editModal(user) {
+            this.editMode = true;
+            this.form.clear()
+            this.form.fill(user)
+            $('#addNew').modal('show')
           }
 
         },
@@ -190,6 +223,10 @@
             Fire.$on('AfterUserDeleted', () => {
                 this.displayUsers();
             });
+
+            Fire.$on('AfterUserUpdated', () => {
+                this.displayUsers();
+            })
 
             // setInterval(() => this.displayUsers(), 3000);
         }
