@@ -2045,16 +2045,6 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    createUser: function createUser() {
-      this.$Progress.start();
-      this.form.post('api/user');
-      $('#addNew').modal('hide');
-      Toast.fire({
-        type: 'success',
-        title: 'User added successfully'
-      });
-      this.$Progress.finish();
-    },
     displayUsers: function displayUsers() {
       var _this = this;
 
@@ -2062,10 +2052,30 @@ __webpack_require__.r(__webpack_exports__);
         var data = _ref.data;
         return _this.users = data.data;
       });
+    },
+    createUser: function createUser() {
+      var _this2 = this;
+
+      this.$Progress.start();
+      this.form.post('api/user').then(function () {
+        Fire.$emit('AfterUserCreated');
+        $('#addNew').modal('hide');
+        Toast.fire({
+          type: 'success',
+          title: 'User added successfully'
+        });
+
+        _this2.$Progress.finish();
+      })["catch"](function () {});
     }
   },
   created: function created() {
+    var _this3 = this;
+
     this.displayUsers();
+    Fire.$on('AfterUserCreated', function () {
+      _this3.displayUsers();
+    }); // setInterval(() => this.displayUsers(), 3000);
   }
 });
 
@@ -74428,6 +74438,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 window.Form = vform__WEBPACK_IMPORTED_MODULE_0__["Form"];
 Vue.component(vform__WEBPACK_IMPORTED_MODULE_0__["HasError"].name, vform__WEBPACK_IMPORTED_MODULE_0__["HasError"]);
 Vue.component(vform__WEBPACK_IMPORTED_MODULE_0__["AlertError"].name, vform__WEBPACK_IMPORTED_MODULE_0__["AlertError"]);
+window.Fire = new Vue();
 
 var options = {
   color: '#10e078',

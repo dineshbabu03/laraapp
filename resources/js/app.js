@@ -15,6 +15,8 @@ window.Form = Form;
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
 
+window.Fire = new Vue();
+
 import VueProgressBar from 'vue-progressbar'
 const options = {
   color: '#10e078',

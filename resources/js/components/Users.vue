@@ -127,27 +127,37 @@
 
         methods: {
 
-          createUser() {
-            this.$Progress.start()
-            this.form.post('api/user')
-            $('#addNew').modal('hide')
-            Toast.fire({
-              type: 'success',
-              title: 'User added successfully'
-            })
-            this.$Progress.finish()
-          },
-
           displayUsers() {
               axios
                 .get("api/user")
                 .then(({ data }) => (this.users = data.data));
+          },
+
+          createUser() {
+            this.$Progress.start()
+            this.form.post('api/user')
+              .then(() => {
+                  Fire.$emit('AfterUserCreated')
+                  $('#addNew').modal('hide')
+                  Toast.fire({
+                    type: 'success',
+                    title: 'User added successfully'
+                  })
+                  this.$Progress.finish();
+              })
+              .catch(() => {
+
+              })
           }
 
         },
 
         created() {
             this.displayUsers();
+            Fire.$on('AfterUserCreated', () => {
+                this.displayUsers();
+            })
+            // setInterval(() => this.displayUsers(), 3000);
         }
     }
 </script>
