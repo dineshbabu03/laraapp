@@ -61,38 +61,38 @@
                   <div class="tab-pane" id="settings">
                     <form class="form-horizontal">
                       <div class="form-group">
-                        <label for="inputName" class="col-sm-2 control-label">Name</label>
+                        <label for="inputName" class="col-sm-10 control-label">Name</label>
 
                         <div class="col-sm-10">
-                          <input type="email" class="form-control" id="inputName" placeholder="Name">
+                          <input v-model="form.name" type="email" class="form-control" id="name" placeholder="Name">
                         </div>
                       </div>
                       <div class="form-group">
-                        <label for="inputEmail" class="col-sm-2 control-label">Email</label>
+                        <label for="inputEmail" class="col-sm-10 control-label">Email</label>
 
                         <div class="col-sm-10">
-                          <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+                          <input v-model="form.email" type="email" class="form-control" id="email" placeholder="Email">
                         </div>
                       </div>
                       <div class="form-group">
-                        <label for="inputName2" class="col-sm-2 control-label">Name</label>
+                        <label for="inputPasswprd" class="col-sm-10 control-label">Password (leave empty if not changing)</label>
 
                         <div class="col-sm-10">
-                          <input type="text" class="form-control" id="inputName2" placeholder="Name">
+                          <input v-model="form.password" type="password" class="form-control" id="password" placeholder="Password">
                         </div>
                       </div>
                       <div class="form-group">
-                        <label for="inputExperience" class="col-sm-2 control-label">Experience</label>
+                        <label for="inputName2" class="col-sm-10 control-label">Type</label>
 
                         <div class="col-sm-10">
-                          <textarea class="form-control" id="inputExperience" placeholder="Experience"></textarea>
+                          <input v-model="form.type" type="text" class="form-control" id="type" placeholder="Type">
                         </div>
                       </div>
                       <div class="form-group">
-                        <label for="inputSkills" class="col-sm-2 control-label">Skills</label>
+                        <label for="inputExperience" class="col-sm-10 control-label">About Me</label>
 
                         <div class="col-sm-10">
-                          <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
+                          <textarea v-model="form.bio" class="form-control" id="bio" placeholder="About Me"></textarea>
                         </div>
                       </div>
                       <div class="form-group">
@@ -147,7 +147,7 @@
             showUser() {
                 axios
                   .get("api/profile")
-                  .then(({ data }) => (this.users = data.data));
+                  .then(({ data }) => (this.form.fill(data)));
             },
         },
 
