@@ -59195,7 +59195,7 @@ var render = function() {
                           ],
                           staticClass: "form-control",
                           attrs: {
-                            type: "email",
+                            type: "text",
                             id: "name",
                             placeholder: "Name"
                           },

@@ -64,7 +64,7 @@
                         <label for="inputName" class="col-sm-10 control-label">Name</label>
 
                         <div class="col-sm-10">
-                          <input v-model="form.name" type="email" class="form-control" id="name" placeholder="Name">
+                          <input v-model="form.name" type="text" class="form-control" id="name" placeholder="Name">
                         </div>
                       </div>
                       <div class="form-group">
