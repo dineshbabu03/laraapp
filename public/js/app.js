@@ -2015,6 +2015,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2038,6 +2045,19 @@ __webpack_require__.r(__webpack_exports__);
         var data = _ref.data;
         return _this.form.fill(data);
       });
+    },
+    uploadfile: function uploadfile(e) {
+      var _this2 = this;
+
+      // console.log(e);
+      var file = e.target.files[0];
+      var reader = new FileReader();
+
+      reader.onloadend = function (file) {
+        _this2.form.photo = reader.result;
+      };
+
+      reader.readAsDataURL(file);
     }
   },
   created: function created() {
@@ -59195,7 +59215,7 @@ var render = function() {
                           ],
                           staticClass: "form-control",
                           attrs: {
-                            type: "email",
+                            type: "text",
                             id: "name",
                             placeholder: "Name"
                           },
@@ -59256,7 +59276,7 @@ var render = function() {
                         "label",
                         {
                           staticClass: "col-sm-10 control-label",
-                          attrs: { for: "inputPasswprd" }
+                          attrs: { for: "inputPassword" }
                         },
                         [_vm._v("Password (leave empty if not changing)")]
                       ),
@@ -59299,7 +59319,7 @@ var render = function() {
                         "label",
                         {
                           staticClass: "col-sm-10 control-label",
-                          attrs: { for: "inputName2" }
+                          attrs: { for: "inputType" }
                         },
                         [_vm._v("Type")]
                       ),
@@ -59364,6 +59384,25 @@ var render = function() {
                               _vm.$set(_vm.form, "bio", $event.target.value)
                             }
                           }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-sm-10 control-label",
+                          attrs: { for: "inputPhoto" }
+                        },
+                        [_vm._v("Upload Photo")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-sm-10" }, [
+                        _c("input", {
+                          staticClass: "form-control-file",
+                          attrs: { type: "file", id: "photo" },
+                          on: { change: _vm.uploadfile }
                         })
                       ])
                     ]),
