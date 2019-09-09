@@ -99,7 +99,7 @@
                         <label for="inputPhoto" class="col-sm-10 control-label">Upload Photo</label>
 
                         <div class="col-sm-10">
-                          <input @change="uploadfile" type="file" class="form-control-file" id="photo">
+                          <input @change="uploadfile" name="photo" type="file" class="form-control-file" id="photo">
                         </div>
                       </div>
                       <div class="form-group">
@@ -113,7 +113,7 @@
                       </div>
                       <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                          <button type="submit" class="btn btn-danger">Submit</button>
+                          <button @click.prevent="uploadProfile" type="submit" class="btn btn-danger">Submit</button>
                         </div>
                       </div>
                     </form>
@@ -152,9 +152,17 @@
 
         methods: {
             showUser() {
+                this.$Progress.start()
                 axios
                   .get("api/profile")
-                  .then(({ data }) => (this.form.fill(data)));
+                  .then(({ data }) => (
+                    this.form.fill(data)
+                  ));
+                Toast.fire({
+                  type: 'success',
+                  title: 'Profile data loaded'
+                })
+                this.$Progress.finish()
             },
 
             uploadfile(e){
@@ -165,6 +173,16 @@
                 this.form.photo = reader.result;
               }
               reader.readAsDataURL(file);
+            },
+
+            uploadProfile(){
+              this.form.put('api/profile')
+              .then(() => {
+
+              })
+              .catch(() => {
+
+              })
             }
         },
 
