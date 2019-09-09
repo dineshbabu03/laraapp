@@ -64,7 +64,7 @@
                         <label for="inputName" class="col-sm-10 control-label">Name</label>
 
                         <div class="col-sm-10">
-                          <input v-model="form.name" type="email" class="form-control" id="name" placeholder="Name">
+                          <input v-model="form.name" type="text" class="form-control" id="name" placeholder="Name">
                         </div>
                       </div>
                       <div class="form-group">
@@ -75,14 +75,14 @@
                         </div>
                       </div>
                       <div class="form-group">
-                        <label for="inputPasswprd" class="col-sm-10 control-label">Password (leave empty if not changing)</label>
+                        <label for="inputPassword" class="col-sm-10 control-label">Password (leave empty if not changing)</label>
 
                         <div class="col-sm-10">
                           <input v-model="form.password" type="password" class="form-control" id="password" placeholder="Password">
                         </div>
                       </div>
                       <div class="form-group">
-                        <label for="inputName2" class="col-sm-10 control-label">Type</label>
+                        <label for="inputType" class="col-sm-10 control-label">Type</label>
 
                         <div class="col-sm-10">
                           <input v-model="form.type" type="text" class="form-control" id="type" placeholder="Type">
@@ -96,6 +96,13 @@
                         </div>
                       </div>
                       <div class="form-group">
+                        <label for="inputPhoto" class="col-sm-10 control-label">Upload Photo</label>
+
+                        <div class="col-sm-10">
+                          <input @change="uploadfile" name="photo" type="file" class="form-control-file" id="photo">
+                        </div>
+                      </div>
+                      <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
                           <div class="checkbox">
                             <label>
@@ -106,7 +113,7 @@
                       </div>
                       <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                          <button type="submit" class="btn btn-danger">Submit</button>
+                          <button @click.prevent="uploadProfile" type="submit" class="btn btn-danger">Submit</button>
                         </div>
                       </div>
                     </form>
@@ -145,10 +152,38 @@
 
         methods: {
             showUser() {
+                this.$Progress.start()
                 axios
                   .get("api/profile")
-                  .then(({ data }) => (this.form.fill(data)));
+                  .then(({ data }) => (
+                    this.form.fill(data)
+                  ));
+                Toast.fire({
+                  type: 'success',
+                  title: 'Profile data loaded'
+                })
+                this.$Progress.finish()
             },
+
+            uploadfile(e){
+              // console.log(e);
+              let file = e.target.files[0];
+              let reader = new FileReader();
+              reader.onloadend = (file) => {
+                this.form.photo = reader.result;
+              }
+              reader.readAsDataURL(file);
+            },
+
+            uploadProfile(){
+              this.form.put('api/profile')
+              .then(() => {
+
+              })
+              .catch(() => {
+
+              })
+            }
         },
 
         created() {

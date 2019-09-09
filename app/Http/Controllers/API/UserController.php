@@ -66,6 +66,24 @@ class UserController extends Controller
         return auth('api')->user();
     }
 
+    public function updateProfile(Request $request)
+    {
+        $user = auth('api')->user();
+
+        if($request->photo){
+
+          $uri = $request->photo;
+          $pos = strpos($uri, ';');
+          $type = explode(':', substr($uri, 0, $pos))[1];
+          $type = explode('/', $type);
+
+          $imgname = time().'.'.$type[1];
+
+          \Image::make($request->photo)->save(public_path('image/profile/').$imgname);
+        }
+
+    }
+
     /**
      * Update the specified resource in storage.
      *
